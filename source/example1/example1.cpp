@@ -122,6 +122,7 @@ int main(void)
       //  computeMatricesFromInputs(window, width, height);
         
         
+        glViewport(0, 0, width*2, height*2);
 
         
         //********Add the Geometry
