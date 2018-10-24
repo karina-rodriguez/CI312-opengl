@@ -37,7 +37,7 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    int width = 500;
+    int width = 1000;
     int height = 500;
     
     // Open a window and create its OpenGL context
@@ -119,10 +119,10 @@ int main(void)
         glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT );
         
         glUseProgram(programID);
-      //  computeMatricesFromInputs(window, width, height);
+        computeMatricesFromInputs(window, width, height);
         
         
-        glViewport(0, 0, width*2, height*2);
+        glViewport(0, 0, width, height*2);
 
         
         //********Add the Geometry
@@ -160,6 +160,43 @@ int main(void)
         glDisableVertexAttribArray(1);
         
         
+        glViewport(width, 0, width, height*2);
+        
+        
+        //********Add the Geometry
+        // 1rst attribute buffer : vertices
+        glEnableVertexAttribArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
+        glVertexAttribPointer(
+                              0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                              3,                  // size
+                              GL_FLOAT,           // type
+                              GL_FALSE,           // normalized?
+                              0,                  // stride
+                              (void*)0            // array buffer offset
+                              );
+        
+        // 2nd attribute buffer : colors
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, colorbuffer);
+        glVertexAttribPointer(
+                              1,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
+                              3,                  // size
+                              GL_FLOAT,           // type
+                              GL_FALSE,           // normalized?
+                              0,                  // stride
+                              (void*)0            // array buffer offset
+                              );
+        
+        
+        
+        // Draw the geometry !
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1
+        
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+
         
         // Swap buffers
         glfwSwapBuffers(window);
